@@ -16,7 +16,7 @@ const ProductItem = props => {
     return (
         <View style={styles.product}>
             <View style={styles.touchable}>
-                <ProductDetails onPress={props.onViewDetail} useForeground> 
+                <ProductDetails onPress={props.onSelect} useForeground> 
                     <View>
                         <Image style={styles.image} source={{uri: props.image}} />
                         <View style={styles.detail}>
@@ -24,8 +24,7 @@ const ProductItem = props => {
                             <DefaultText style={styles.price}>₹{price}</DefaultText>
                         </View>
                         <View style={styles.action}>
-                            <Button color={Colors.primary} title='View Details' onPress={props.onViewDetail} />
-                            <Button color={Colors.primary} title='To Cart' onPress={props.onAddToCart} />
+                            {props.children}
                         </View>
                     </View>
                 </ProductDetails>
@@ -75,7 +74,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        height: '25%',
+        height: '23%',
         paddingHorizontal: 20
     }
 });
