@@ -1,5 +1,5 @@
-import React from 'react';
-import { Button, FlatList, StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { ActivityIndicator, Button, FlatList, StyleSheet, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import CartItem from '../../components/shop/CartItem';
@@ -9,6 +9,8 @@ import * as ordersActions from '../../store/actions/orderAction';
 import Colors from '../../constants/Colors';
 
 const CartScreen = () => {
+    const [isLoading, setIsLoading] = useState(false);
+
     const cartTotalAmount = useSelector(state => state.cart.totalAmount);
     const cartItems = useSelector(state => {
         const transformedCartItems = [];
@@ -25,6 +27,12 @@ const CartScreen = () => {
     });
 
     const dispatch = useDispatch();
+
+    const sendOrderHandler = async () => {
+        setIsLoading(true);
+        await dispatch(ordersActions.addOrder(cartItems, cartTotalAmount));
+        setIsLoading(false);
+    }
 
     return (
         <View style={styles.screen}>
@@ -50,14 +58,20 @@ const CartScreen = () => {
                 <Text style={styles.summaryText}>
                     Total: <Text style={styles.amount}>₹{cartTotalAmount.toFixed(2)}</Text>
                 </Text>
-                <Button 
-                    color={Colors.accent} 
-                    title='Place Order' 
-                    disabled={cartItems.length === 0} 
-                    onPress={() => {
-                        dispatch(ordersActions.addOrder(cartItems, cartTotalAmount));
-                    }}
-                />
+                {
+                    isLoading 
+                    ? <ActivityIndicator 
+                        size='small' 
+                        color={Colors.primary} 
+                    />
+                    : <Button 
+                        color={Colors.accent} 
+                        title='Place Order' 
+                        disabled={cartItems.length === 0} 
+                        onPress={sendOrderHandler}
+                    />
+                }
+
             </View>
         </View>
     );
