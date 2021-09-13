@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, FlatList, Platform, StyleSheet, Text, View } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { useDispatch, useSelector } from 'react-redux';
+import DefaultText from '../../components/DefaultText';
 
 import OrderItem from '../../components/shop/OrderItem';
 import CustomHeaderButton from '../../components/UI/CustomHeaderButton';
@@ -25,6 +26,14 @@ const OrderScreen = props => {
         return(
             <View style={styles.centered}>
                 <ActivityIndicator size='large' color={Colors.primary} />
+            </View>
+        )
+    }
+
+    if(orders.length === 0) {
+        return(
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                <DefaultText>No products found, maybe start ordering some?</DefaultText>
             </View>
         )
     }
